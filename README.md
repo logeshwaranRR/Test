@@ -1,19 +1,23 @@
-@Repository
-public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
+You are helping me with a research and documentation task.
 
-    @Query(value = """
-        SELECT 
-            a.first_name AS firstName,
-            a.last_name AS lastName,
-            a.birth_date AS birthDate,
-            pn.phone_number AS phoneNumber,
-            pt.type_name AS phoneType
-        FROM iom_order o
-        JOIN applicant_order_link aol ON o.order_id = aol.order_id
-        JOIN applicant a ON aol.applicant_id = a.applicant_id
-        LEFT JOIN phone_number pn ON a.applicant_id = pn.applicant_id
-        LEFT JOIN phone_type pt ON pn.phone_type_id = pt.phone_type_id
-        WHERE o.order_id = :orderId
-        """, nativeQuery = true)
-    List<ApplicantPhoneDTO> findApplicantAndPhoneByOrderId(@Param("orderId") Long orderId);
-}
+Current state:
+- Java APIs directly query DB to get PDM
+- Payloads are built from PDM and sent to downstream systems
+
+Target state:
+- APIs will call a new microservice
+- Microservice handles DB interactions
+- APIs build payloads from microservice response
+
+My responsibility:
+- Research and document EPRO APIs and Vertex Index APIs
+
+Goal:
+- Identify data flow across DB → PDM → Java → downstream payload
+- Prepare documentation for future microservice design
+
+Rules:
+- Do not assume fields exist unless verified in code or DB mappings
+- Point to exact Java classes, methods, SQL queries, and workflows
+- If information is missing, clearly say "Not Found"
+- Organize output in tables
